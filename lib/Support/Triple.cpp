@@ -38,6 +38,7 @@ const char *Triple::getArchTypeName(ArchType Kind) {
   case x86_64:  return "x86_64";
   case xcore:   return "xcore";
   case mblaze:  return "mblaze";
+  case T3RAS:  return "T3RAS";
   case ptx32:   return "ptx32";
   case ptx64:   return "ptx64";
   case le32:    return "le32";
@@ -61,7 +62,7 @@ const char *Triple::getArchTypePrefix(ArchType Kind) {
   case ppc:     return "ppc";
 
   case mblaze:  return "mblaze";
-
+  case T3RAS:  return "T3RAS";
   case hexagon:   return "hexagon";
 
   case r600:    return "r600";
@@ -151,6 +152,7 @@ Triple::ArchType Triple::getArchTypeForLLVMName(StringRef Name) {
     .Case("ppc32", ppc)
     .Case("ppc", ppc)
     .Case("mblaze", mblaze)
+.Case("T3RAS", T3RAS)
     .Case("r600", r600)
     .Case("hexagon", hexagon)
     .Case("sparc", sparc)
@@ -209,6 +211,7 @@ const char *Triple::getArchNameForAssembler() {
     .Case("powerpc", "ppc")
     .Case("powerpc64", "ppc64")
     .Cases("mblaze", "microblaze", "mblaze")
+.Cases("T3RAS", "T3RAS", "T3RAS")
     .Case("arm", "arm")
     .Cases("armv4t", "thumbv4t", "armv4t")
     .Cases("armv5", "armv5e", "thumbv5", "thumbv5e", "armv5")
@@ -231,6 +234,7 @@ static Triple::ArchType parseArch(StringRef ArchName) {
     .Case("powerpc", Triple::ppc)
     .Cases("powerpc64", "ppu", Triple::ppc64)
     .Case("mblaze", Triple::mblaze)
+	.Case("T3RAS", Triple::T3RAS)
     .Cases("arm", "xscale", Triple::arm)
     // FIXME: It would be good to replace these with explicit names for all the
     // various suffixes supported.
@@ -650,6 +654,7 @@ static unsigned getArchPointerBitWidth(llvm::Triple::ArchType Arch) {
   case llvm::Triple::hexagon:
   case llvm::Triple::le32:
   case llvm::Triple::mblaze:
+  case llvm::Triple::T3RAS:
   case llvm::Triple::mips:
   case llvm::Triple::mipsel:
   case llvm::Triple::ppc:
@@ -699,6 +704,7 @@ Triple Triple::get32BitArchVariant() const {
   case Triple::hexagon:
   case Triple::le32:
   case Triple::mblaze:
+	case Triple::T3RAS:
   case Triple::mips:
   case Triple::mipsel:
   case Triple::ppc:
@@ -732,6 +738,7 @@ Triple Triple::get64BitArchVariant() const {
   case Triple::hexagon:
   case Triple::le32:
   case Triple::mblaze:
+  case Triple::T3RAS:
   case Triple::msp430:
   case Triple::r600:
   case Triple::tce:
