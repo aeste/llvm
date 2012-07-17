@@ -94,7 +94,14 @@ namespace CallingConv {
 
     /// MBLAZE_INTR - Calling convention used for MBlaze interrupt support
     /// routines (i.e. GCC's save_volatiles attribute).
-    MBLAZE_SVOL = 74
+    MBLAZE_SVOL = 74,
+
+    /// MBLAZE_INTR - Calling convention used for MBlaze interrupt routines.
+    T3RAS_INTR = 73,
+
+    /// MBLAZE_INTR - Calling convention used for MBlaze interrupt support
+    /// routines (i.e. GCC's save_volatiles attribute).
+    T3RAS_SVOL = 74
   };
 } // End CallingConv namespace
 
