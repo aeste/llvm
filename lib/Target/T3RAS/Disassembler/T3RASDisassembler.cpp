@@ -42,8 +42,9 @@ static const uint16_t T3RASBinary2Opcode[] = {
   T3RAS::ADDI,  T3RAS::RSUBI,  T3RAS::ADDIC,  T3RAS::RSUBIC,  //08,09,0A,0B
   T3RAS::ADDIK, T3RAS::RSUBIK, T3RAS::ADDIKC, T3RAS::RSUBIKC, //0C,0D,0E,0F
 
-  T3RAS::MUL,   T3RAS::BSRL,   T3RAS::IDIV,   T3RAS::GETD,    //10,11,12,13
-  UNSUPPORTED,   UNSUPPORTED,    T3RAS::FADD,   UNSUPPORTED,     //14,15,16,17
+  T3RAS::MUL,   T3RAS::BSRL,   //T3RAS::IDIV,
+ T3RAS::GETD,    //10,11,12,13
+  UNSUPPORTED,   //UNSUPPORTED,    //T3RAS::FADD,   UNSUPPORTED,     //14,15,16,17
   T3RAS::MULI,  T3RAS::BSRLI,  UNSUPPORTED,    T3RAS::GET,     //18,19,1A,1B
   UNSUPPORTED,   UNSUPPORTED,    UNSUPPORTED,    UNSUPPORTED,     //1C,1D,1E,1F
 
@@ -105,9 +106,9 @@ static unsigned decodeMUL(uint32_t insn) {
     switch (getFLAGS(insn)) {
     default: return UNSUPPORTED;
     case 0:  return T3RAS::MUL;
-    case 1:  return T3RAS::MULH;
-    case 2:  return T3RAS::MULHSU;
-    case 3:  return T3RAS::MULHU;
+    //case 1:  return T3RAS::MULH;
+    //case 2:  return T3RAS::MULHSU;
+    //case 3:  return T3RAS::MULHU;
     }
 }
 
@@ -123,7 +124,7 @@ static unsigned decodeSEXT(uint32_t insn) {
     case 0x41: return T3RAS::SRL;
     case 0x21: return T3RAS::SRC;
     case 0x01: return T3RAS::SRA;
-    case 0xE0: return T3RAS::CLZ;
+    //case 0xE0: return T3RAS::CLZ;
     }
 }
 
@@ -223,25 +224,25 @@ static unsigned decodeRSUBK(uint32_t insn) {
     }
 }
 
-static unsigned decodeFADD(uint32_t insn) {
-    switch (getFLAGS(insn)) {
-    default:    return UNSUPPORTED;
-    case 0x000: return T3RAS::FADD;
-    case 0x080: return T3RAS::FRSUB;
-    case 0x100: return T3RAS::FMUL;
-    case 0x180: return T3RAS::FDIV;
-    case 0x200: return T3RAS::FCMP_UN;
-    case 0x210: return T3RAS::FCMP_LT;
-    case 0x220: return T3RAS::FCMP_EQ;
-    case 0x230: return T3RAS::FCMP_LE;
-    case 0x240: return T3RAS::FCMP_GT;
-    case 0x250: return T3RAS::FCMP_NE;
-    case 0x260: return T3RAS::FCMP_GE;
-    case 0x280: return T3RAS::FLT;
-    case 0x300: return T3RAS::FINT;
-    case 0x380: return T3RAS::FSQRT;
-    }
-}
+//static unsigned decodeFADD(uint32_t insn) {
+//    switch (getFLAGS(insn)) {
+ //   default:    return UNSUPPORTED;
+ //   case 0x000: return T3RAS::FADD;
+ //   case 0x080: return T3RAS::FRSUB;
+ //   case 0x100: return T3RAS::FMUL;
+  //  case 0x180: return T3RAS::FDIV;
+  //  case 0x200: return T3RAS::FCMP_UN;
+ //   case 0x210: return T3RAS::FCMP_LT;
+ //   case 0x220: return T3RAS::FCMP_EQ;
+ //   case 0x230: return T3RAS::FCMP_LE;
+ //   case 0x240: return T3RAS::FCMP_GT;
+ //   case 0x250: return T3RAS::FCMP_NE;
+ //   case 0x260: return T3RAS::FCMP_GE;
+ //   case 0x280: return T3RAS::FLT;
+ //   case 0x300: return T3RAS::FINT;
+ //   case 0x380: return T3RAS::FSQRT;
+ //   }
+//}
 
 static unsigned decodeGET(uint32_t insn) {
     switch ((insn>>10)&0x3F) {
@@ -351,13 +352,13 @@ static unsigned decodeGETD(uint32_t insn) {
     }
 }
 
-static unsigned decodeIDIV(uint32_t insn) {
-    switch (insn&0x3) {
-    default:  return UNSUPPORTED;
-    case 0x0: return T3RAS::IDIV;
-    case 0x2: return T3RAS::IDIVU;
-    }
-}
+//static unsigned decodeIDIV(uint32_t insn) {
+ //   switch (insn&0x3) {
+//    default:  return UNSUPPORTED;
+//    case 0x0: return T3RAS::IDIV;
+ //   case 0x2: return T3RAS::IDIVU;
+ //   }
+//}
 
 static unsigned decodeLBU(uint32_t insn) {
     switch ((insn>>9)&0x1) {
@@ -431,7 +432,7 @@ static unsigned decodeOR(uint32_t insn) {
     switch (getFLAGS(insn)) {
     default:    return UNSUPPORTED;
     case 0x000: return T3RAS::OR;
-    case 0x400: return T3RAS::PCMPBF;
+    //case 0x400: return T3RAS::PCMPBF;
     }
 }
 
@@ -439,7 +440,7 @@ static unsigned decodeXOR(uint32_t insn) {
     switch (getFLAGS(insn)) {
     default:    return UNSUPPORTED;
     case 0x000: return T3RAS::XOR;
-    case 0x400: return T3RAS::PCMPEQ;
+    //case 0x400: return T3RAS::PCMPEQ;
     }
 }
 
@@ -447,7 +448,7 @@ static unsigned decodeANDN(uint32_t insn) {
     switch (getFLAGS(insn)) {
     default:    return UNSUPPORTED;
     case 0x000: return T3RAS::ANDN;
-    case 0x400: return T3RAS::PCMPNE;
+    //case 0x400: return T3RAS::PCMPNE;
     }
 }
 
@@ -473,10 +474,10 @@ static unsigned getOPCODE(uint32_t insn) {
   case T3RAS::BSRL:    return decodeBSRL(insn);
   case T3RAS::BSRLI:   return decodeBSRLI(insn);
   case T3RAS::RSUBK:   return decodeRSUBK(insn);
-  case T3RAS::FADD:    return decodeFADD(insn);
+  //case T3RAS::FADD:    return decodeFADD(insn);
   case T3RAS::GET:     return decodeGET(insn);
   case T3RAS::GETD:    return decodeGETD(insn);
-  case T3RAS::IDIV:    return decodeIDIV(insn);
+  //case T3RAS::IDIV:    return decodeIDIV(insn);
   case T3RAS::LBU:     return decodeLBU(insn);
   case T3RAS::LHU:     return decodeLHU(insn);
   case T3RAS::LW:      return decodeLW(insn);

@@ -93,7 +93,7 @@ let Predicates=[HasFPU] in {
   def FADD   :  ArithF<0x16, 0x000, "fadd   ", fadd, IIC_FPU>;
   def FRSUB  : ArithFR<0x16, 0x080, "frsub  ", fsub, IIC_FPU>;
   def FMUL   :  ArithF<0x16, 0x100, "fmul   ", fmul, IIC_FPU>;
-  def FDIV   :  ArithF<0x16, 0x180, "fdiv   ", fdiv, IIC_FPUd>;
+  //def FDIV   :  ArithF<0x16, 0x180, "fdiv   ", fdiv, IIC_FPUd>;
 }
 
 let Predicates=[HasFPU], isCodeGenOnly=1 in {
@@ -107,7 +107,7 @@ let Predicates=[HasFPU], isCodeGenOnly=1 in {
 let Predicates=[HasFPU,HasSqrt] in {
   def FLT    : ArithIF<0x16, 0x280, "flt    ", IIC_FPUf>;
   def FINT   : ArithFI<0x16, 0x300, "fint   ", IIC_FPUi>;
-  def FSQRT  : ArithF2<0x16, 0x380, "fsqrt  ", IIC_FPUs>;
+  //def FSQRT  : ArithF2<0x16, 0x380, "fsqrt  ", IIC_FPUs>;
 }
 
 let isAsCheapAsAMove = 1 in {
@@ -129,11 +129,11 @@ let usesCustomInserter = 1 in {
 }
 
 // Floating point conversions
-let Predicates=[HasFPU] in {
-  def : Pat<(sint_to_fp GPR:$V), (FLT GPR:$V)>;
-  def : Pat<(fp_to_sint GPR:$V), (FINT GPR:$V)>;
-  def : Pat<(fsqrt GPR:$V), (FSQRT GPR:$V)>;
-}
+//let Predicates=[HasFPU] in {
+//  def : Pat<(sint_to_fp GPR:$V), (FLT GPR:$V)>;
+//  def : Pat<(fp_to_sint GPR:$V), (FINT GPR:$V)>;
+//  def : Pat<(fsqrt GPR:$V), (FSQRT GPR:$V)>;
+//}
 
 // SET_CC operations
 let Predicates=[HasFPU] in {
@@ -216,4 +216,4 @@ def : Pat<(select (i32 GPR:$C), (f32 GPR:$T), (f32 GPR:$F)),
 //===----------------------------------------------------------------------===//
 // Patterns for Floating Point Instructions
 //===----------------------------------------------------------------------===//
-def : Pat<(f32 fpimm:$imm), (FORI (i32 R0), fpimm:$imm)>;
+//def : Pat<(f32 fpimm:$imm), (FORI (i32 R0), fpimm:$imm)>;

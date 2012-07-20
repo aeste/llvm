@@ -50,18 +50,18 @@ def callseq_end   : SDNode<"ISD::CALLSEQ_END", SDT_MBCallSeqEnd,
 // def HasPipe3     : Predicate<"Subtarget.hasPipe3()">;
 def HasBarrel    : Predicate<"Subtarget.hasBarrel()">;
 // def NoBarrel     : Predicate<"!Subtarget.hasBarrel()">;
-def HasDiv       : Predicate<"Subtarget.hasDiv()">;
+//def HasDiv       : Predicate<"Subtarget.hasDiv()">;
 def HasMul       : Predicate<"Subtarget.hasMul()">;
 // def HasFSL       : Predicate<"Subtarget.hasFSL()">;
 // def HasEFSL      : Predicate<"Subtarget.hasEFSL()">;
 // def HasMSRSet    : Predicate<"Subtarget.hasMSRSet()">;
 // def HasException : Predicate<"Subtarget.hasException()">;
-def HasPatCmp    : Predicate<"Subtarget.hasPatCmp()">;
-def HasFPU       : Predicate<"Subtarget.hasFPU()">;
+//def HasPatCmp    : Predicate<"Subtarget.hasPatCmp()">;
+//def HasFPU       : Predicate<"Subtarget.hasFPU()">;
 // def HasESR       : Predicate<"Subtarget.hasESR()">;
 // def HasPVR       : Predicate<"Subtarget.hasPVR()">;
-def HasMul64     : Predicate<"Subtarget.hasMul64()">;
-def HasSqrt      : Predicate<"Subtarget.hasSqrt()">;
+//def HasMul64     : Predicate<"Subtarget.hasMul64()">;
+//def HasSqrt      : Predicate<"Subtarget.hasSqrt()">;
 // def HasMMU       : Predicate<"Subtarget.hasMMU()">;
 
 //===----------------------------------------------------------------------===//
@@ -340,11 +340,11 @@ let isCommutable = 1, isAsCheapAsAMove = 1 in {
   def OR     :  Logic<0x20, 0x000, "or     ", or>;
   def XOR    :  Logic<0x22, 0x000, "xor    ", xor>;
 
-  let Predicates=[HasPatCmp] in {
-    def PCMPBF : PatCmp<0x20, 0x400, "pcmpbf ">;
-    def PCMPEQ : PatCmp<0x22, 0x400, "pcmpeq ">;
-    def PCMPNE : PatCmp<0x23, 0x400, "pcmpne ">;
-  }
+ // let Predicates=[HasPatCmp] in {
+//    def PCMPBF : PatCmp<0x20, 0x400, "pcmpbf ">;
+//    def PCMPEQ : PatCmp<0x22, 0x400, "pcmpeq ">;
+//    def PCMPNE : PatCmp<0x23, 0x400, "pcmpne ">;
+//  }
 
   let Defs = [CARRY] in {
     def ADD    :  Arith<0x00, 0x000, "add    ", addc, IIC_ALU>;
@@ -382,14 +382,14 @@ let isCommutable = 1, Predicates=[HasMul] in {
   def MUL    : Arith<0x10, 0x000, "mul    ", mul,   IIC_ALUm>;
 }
 
-let isCommutable = 1, Predicates=[HasMul,HasMul64] in {
-  def MULH   : Arith<0x10, 0x001, "mulh   ", mulhs, IIC_ALUm>;
-  def MULHU  : Arith<0x10, 0x003, "mulhu  ", mulhu, IIC_ALUm>;
-}
+//let isCommutable = 1, Predicates=[HasMul,HasMul64] in {
+//  def MULH   : Arith<0x10, 0x001, "mulh   ", mulhs, IIC_ALUm>;
+//  def MULHU  : Arith<0x10, 0x003, "mulhu  ", mulhu, IIC_ALUm>;
+//}
 
-let Predicates=[HasMul,HasMul64] in {
-  def MULHSU : ArithN<0x10, 0x002, "mulhsu ", IIC_ALUm>;
-}
+//let Predicates=[HasMul,HasMul64] in {
+//  def MULHSU : ArithN<0x10, 0x002, "mulhsu ", IIC_ALUm>;
+//}
 
 let Predicates=[HasBarrel] in {
   def BSRL   :   Arith<0x11, 0x000, "bsrl   ", srl, IIC_SHT>;
@@ -400,10 +400,10 @@ let Predicates=[HasBarrel] in {
   def BSLLI  :  ShiftI<0x19, 0x2, "bslli  ", shl, uimm5, immZExt5>;
 }
 
-let Predicates=[HasDiv] in {
-  def IDIV   :  ArithR<0x12, 0x000, "idiv   ", sdiv, IIC_ALUd>;
-  def IDIVU  :  ArithR<0x12, 0x002, "idivu  ", udiv, IIC_ALUd>;
-}
+//let Predicates=[HasDiv] in {
+//  def IDIV   :  ArithR<0x12, 0x000, "idiv   ", sdiv, IIC_ALUd>;
+//  def IDIVU  :  ArithR<0x12, 0x002, "idivu  ", udiv, IIC_ALUd>;
+//}
 
 //===----------------------------------------------------------------------===//
 // MBlaze immediate mode arithmetic instructions
@@ -597,10 +597,10 @@ let neverHasSideEffects = 1 in {
   def NOP :  T3RASInst<0x20, FC, (outs), (ins), "nop    ", [], IIC_ALU>;
 }
 
-let Predicates=[HasPatCmp] in {
-  def CLZ :  TCLZ<0x24, 0x00E0, (outs GPR:$dst), (ins GPR:$src),
-                  "clz    $dst, $src", [], IIC_ALU>;
-}
+//let Predicates=[HasPatCmp] in {
+//  def CLZ :  TCLZ<0x24, 0x00E0, (outs GPR:$dst), (ins GPR:$src),
+//                  "clz    $dst, $src", [], IIC_ALU>;
+//}
 
 def IMEMBAR  : MBAR<0x2E, 0x0420004, (outs), (ins), "mbar   2", [], IIC_ALU>;
 def DMEMBAR  : MBAR<0x2E, 0x0220004, (outs), (ins), "mbar   1", [], IIC_ALU>;
@@ -1049,4 +1049,4 @@ def : Pat<(atomic_fence (imm), (imm)), (MEMBARRIER)>;
 // Floating Point Support
 //===----------------------------------------------------------------------===//
 include "T3RASInstrFSL.td"
-include "T3RASInstrFPU.td"
+//include "T3RASInstrFPU.td"

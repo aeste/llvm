@@ -27,8 +27,8 @@ T3RASSubtarget::T3RASSubtarget(const std::string &TT,
                                  const std::string &CPU,
                                  const std::string &FS):
   T3RASGenSubtargetInfo(TT, CPU, FS),
-  HasBarrel(false), HasDiv(false), HasMul(false), HasPatCmp(false),
-  HasFPU(false), HasMul64(false), HasSqrt(false)
+  HasBarrel(true), HasMul(true)//, HasDiv(false), HasPatCmp(false),
+  //HasFPU(false), HasMul64(false), HasSqrt(false)
 {
   // Parse features string.
   std::string CPUName = CPU;

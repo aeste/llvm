@@ -63,10 +63,10 @@ T3RASTargetLowering::T3RASTargetLowering(T3RASTargetMachine &TM)
 
   // Set up the register classes
   addRegisterClass(MVT::i32, T3RAS::GPRRegisterClass);
-  if (Subtarget->hasFPU()) {
-    addRegisterClass(MVT::f32, T3RAS::GPRRegisterClass);
+  //if (Subtarget->hasFPU()) {
+  //  addRegisterClass(MVT::f32, T3RAS::GPRRegisterClass);
     setOperationAction(ISD::ConstantFP, MVT::f32, Legal);
-  }
+  //}
 
   // Floating point operations which are not supported
   setOperationAction(ISD::FREM,       MVT::f32, Expand);
@@ -223,7 +223,7 @@ T3RASTargetLowering::EmitInstrWithCustomInserter(MachineInstr *MI,
   case T3RAS::ShiftL:
     return EmitCustomShift(MI, MBB);
 
-  case T3RAS::Select_FCC:
+  //case T3RAS::Select_FCC:
   case T3RAS::Select_CC:
     return EmitCustomSelect(MI, MBB);
 
