@@ -33,18 +33,18 @@ def T3RASInstrInfo : InstrInfo;
 //this section needs to be modified to be compatible with T3RAS
 def FeatureBarrel      : SubtargetFeature<"barrel", "HasBarrel", "true",
                                 "Implements barrel shifter">;
-def FeatureDiv         : SubtargetFeature<"div", "HasDiv", "true",
-                                "Implements hardware divider">;
+//def FeatureDiv         : SubtargetFeature<"div", "HasDiv", "true",
+//                                "Implements hardware divider">;
 def FeatureMul         : SubtargetFeature<"mul", "HasMul", "true",
                                 "Implements hardware multiplier">;
-def FeaturePatCmp      : SubtargetFeature<"patcmp", "HasPatCmp", "true",
-                                "Implements pattern compare instruction">;
-def FeatureFPU         : SubtargetFeature<"fpu", "HasFPU", "true",
-                                "Implements floating point unit">;
-def FeatureMul64       : SubtargetFeature<"mul64", "HasMul64", "true",
-                                "Implements multiplier with 64-bit result">;
-def FeatureSqrt        : SubtargetFeature<"sqrt", "HasSqrt", "true",
-                                "Implements sqrt and floating point convert">;
+//def FeaturePatCmp      : SubtargetFeature<"patcmp", "HasPatCmp", "true",
+//                                "Implements pattern compare instruction">;
+//def FeatureFPU         : SubtargetFeature<"fpu", "HasFPU", "true",
+//                                "Implements floating point unit">;
+//def FeatureMul64       : SubtargetFeature<"mul64", "HasMul64", "true",
+//                                "Implements multiplier with 64-bit result">;
+//def FeatureSqrt        : SubtargetFeature<"sqrt", "HasSqrt", "true",
+//                                "Implements sqrt and floating point convert">;
 
 //===----------------------------------------------------------------------===//
 // MBlaze processors supported.
