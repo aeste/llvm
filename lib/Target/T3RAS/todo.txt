@@ -1,0 +1,1 @@
+check with other architectures on how they seperate variants in code
