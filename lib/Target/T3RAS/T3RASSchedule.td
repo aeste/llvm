@@ -27,16 +27,16 @@ def IIC_FSLg   : InstrItinClass;
 def IIC_FSLp   : InstrItinClass;
 def IIC_MEMs   : InstrItinClass;
 def IIC_MEMl   : InstrItinClass;
-def IIC_FPU    : InstrItinClass;
+/*def IIC_FPU    : InstrItinClass;
 def IIC_FPUd   : InstrItinClass;
 def IIC_FPUf   : InstrItinClass;
 def IIC_FPUi   : InstrItinClass;
 def IIC_FPUs   : InstrItinClass;
-def IIC_FPUc   : InstrItinClass;
+def IIC_FPUc   : InstrItinClass;*/
 def IIC_BR     : InstrItinClass;
 def IIC_BRc    : InstrItinClass;
 def IIC_BRl    : InstrItinClass;
-def IIC_WDC    : InstrItinClass;
+//def IIC_WDC    : InstrItinClass;
 def IIC_Pseudo : InstrItinClass;
 
 //===----------------------------------------------------------------------===//
