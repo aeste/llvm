@@ -116,10 +116,10 @@ static unsigned decodeSEXT(uint32_t insn) {
     switch (insn&0x7FF) {
     default:   return UNSUPPORTED;
     case 0x60: return T3RAS::SEXT8;
-    case 0x68: return T3RAS::WIC;
+    /*case 0x68: return T3RAS::WIC;
     case 0x64: return T3RAS::WDC;
     case 0x66: return T3RAS::WDCC;
-    case 0x74: return T3RAS::WDCF;
+    case 0x74: return T3RAS::WDCF;*/
     case 0x61: return T3RAS::SEXT16;
     case 0x41: return T3RAS::SRL;
     case 0x21: return T3RAS::SRC;
@@ -223,81 +223,81 @@ static unsigned decodeRSUBK(uint32_t insn) {
     case 0x3: return T3RAS::CMPU;
     }
 }
-
-//static unsigned decodeFADD(uint32_t insn) {
-//    switch (getFLAGS(insn)) {
- //   default:    return UNSUPPORTED;
- //   case 0x000: return T3RAS::FADD;
- //   case 0x080: return T3RAS::FRSUB;
- //   case 0x100: return T3RAS::FMUL;
-  //  case 0x180: return T3RAS::FDIV;
-  //  case 0x200: return T3RAS::FCMP_UN;
- //   case 0x210: return T3RAS::FCMP_LT;
- //   case 0x220: return T3RAS::FCMP_EQ;
- //   case 0x230: return T3RAS::FCMP_LE;
- //   case 0x240: return T3RAS::FCMP_GT;
- //   case 0x250: return T3RAS::FCMP_NE;
- //   case 0x260: return T3RAS::FCMP_GE;
- //   case 0x280: return T3RAS::FLT;
- //   case 0x300: return T3RAS::FINT;
- //   case 0x380: return T3RAS::FSQRT;
- //   }
-//}
-
+#ifdef float_instr
+static unsigned decodeFADD(uint32_t insn) {
+    switch (getFLAGS(insn)) {
+    default:    return UNSUPPORTED;
+    case 0x000: return T3RAS::FADD;
+    case 0x080: return T3RAS::FRSUB;
+    case 0x100: return T3RAS::FMUL;
+    case 0x180: return T3RAS::FDIV;
+    case 0x200: return T3RAS::FCMP_UN;
+    case 0x210: return T3RAS::FCMP_LT;
+    case 0x220: return T3RAS::FCMP_EQ;
+    case 0x230: return T3RAS::FCMP_LE;
+    case 0x240: return T3RAS::FCMP_GT;
+    case 0x250: return T3RAS::FCMP_NE;
+    case 0x260: return T3RAS::FCMP_GE;
+    case 0x280: return T3RAS::FLT;
+    case 0x300: return T3RAS::FINT;
+    case 0x380: return T3RAS::FSQRT;
+    }
+}
+#endif
 static unsigned decodeGET(uint32_t insn) {
     switch ((insn>>10)&0x3F) {
     default:   return UNSUPPORTED;
     case 0x00: return T3RAS::GET;
-    case 0x01: return T3RAS::EGET;
+    /*case 0x01: return T3RAS::EGET;
     case 0x02: return T3RAS::AGET;
     case 0x03: return T3RAS::EAGET;
     case 0x04: return T3RAS::TGET;
     case 0x05: return T3RAS::TEGET;
     case 0x06: return T3RAS::TAGET;
-    case 0x07: return T3RAS::TEAGET;
+    case 0x07: return T3RAS::TEAGET;*/
     case 0x08: return T3RAS::CGET;
-    case 0x09: return T3RAS::ECGET;
+    /*case 0x09: return T3RAS::ECGET;
     case 0x0A: return T3RAS::CAGET;
     case 0x0B: return T3RAS::ECAGET;
     case 0x0C: return T3RAS::TCGET;
     case 0x0D: return T3RAS::TECGET;
     case 0x0E: return T3RAS::TCAGET;
-    case 0x0F: return T3RAS::TECAGET;
+    case 0x0F: return T3RAS::TECAGET;*/
     case 0x10: return T3RAS::NGET;
-    case 0x11: return T3RAS::NEGET;
+    /*case 0x11: return T3RAS::NEGET;
     case 0x12: return T3RAS::NAGET;
     case 0x13: return T3RAS::NEAGET;
     case 0x14: return T3RAS::TNGET;
     case 0x15: return T3RAS::TNEGET;
     case 0x16: return T3RAS::TNAGET;
-    case 0x17: return T3RAS::TNEAGET;
+    case 0x17: return T3RAS::TNEAGET;*/
     case 0x18: return T3RAS::NCGET;
-    case 0x19: return T3RAS::NECGET;
+    /*case 0x19: return T3RAS::NECGET;
     case 0x1A: return T3RAS::NCAGET;
     case 0x1B: return T3RAS::NECAGET;
     case 0x1C: return T3RAS::TNCGET;
     case 0x1D: return T3RAS::TNECGET;
     case 0x1E: return T3RAS::TNCAGET;
-    case 0x1F: return T3RAS::TNECAGET;
+    case 0x1F: return T3RAS::TNECAGET;*/
     case 0x20: return T3RAS::PUT;
-    case 0x22: return T3RAS::APUT;
+    /*case 0x22: return T3RAS::APUT;
     case 0x24: return T3RAS::TPUT;
     case 0x26: return T3RAS::TAPUT;
     case 0x28: return T3RAS::CPUT;
     case 0x2A: return T3RAS::CAPUT;
     case 0x2C: return T3RAS::TCPUT;
-    case 0x2E: return T3RAS::TCAPUT;
+    case 0x2E: return T3RAS::TCAPUT;*/
     case 0x30: return T3RAS::NPUT;
-    case 0x32: return T3RAS::NAPUT;
+    /*case 0x32: return T3RAS::NAPUT;
     case 0x34: return T3RAS::TNPUT;
     case 0x36: return T3RAS::TNAPUT;
     case 0x38: return T3RAS::NCPUT;
     case 0x3A: return T3RAS::NCAPUT;
     case 0x3C: return T3RAS::TNCPUT;
-    case 0x3E: return T3RAS::TNCAPUT;
+    case 0x3E: return T3RAS::TNCAPUT;*/
     }
 }
-
+#ifdef GETD_instr
 static unsigned decodeGETD(uint32_t insn) {
     switch ((insn>>5)&0x3F) {
     default:   return UNSUPPORTED;
@@ -351,14 +351,16 @@ static unsigned decodeGETD(uint32_t insn) {
     case 0x3E: return T3RAS::TNCAPUTD;
     }
 }
-
-//static unsigned decodeIDIV(uint32_t insn) {
- //   switch (insn&0x3) {
-//    default:  return UNSUPPORTED;
-//    case 0x0: return T3RAS::IDIV;
- //   case 0x2: return T3RAS::IDIVU;
- //   }
-//}
+#endif
+#ifdef T3RAS_IDIV
+static unsigned decodeIDIV(uint32_t insn) {
+    switch (insn&0x3) {
+    default:  return UNSUPPORTED;
+    case 0x0: return T3RAS::IDIV;
+    case 0x2: return T3RAS::IDIVU;
+    }
+}
+#endif
 
 static unsigned decodeLBU(uint32_t insn) {
     switch ((insn>>9)&0x1) {
@@ -476,7 +478,7 @@ static unsigned getOPCODE(uint32_t insn) {
   case T3RAS::RSUBK:   return decodeRSUBK(insn);
   //case T3RAS::FADD:    return decodeFADD(insn);
   case T3RAS::GET:     return decodeGET(insn);
-  case T3RAS::GETD:    return decodeGETD(insn);
+  //case T3RAS::GETD:    return decodeGETD(insn);
   //case T3RAS::IDIV:    return decodeIDIV(insn);
   case T3RAS::LBU:     return decodeLBU(insn);
   case T3RAS::LHU:     return decodeLHU(insn);
