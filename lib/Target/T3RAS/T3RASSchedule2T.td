@@ -10,7 +10,7 @@
 //===----------------------------------------------------------------------===//
 // MBlaze instruction itineraries for the five stage pipeline.
 //===----------------------------------------------------------------------===//
-def T3RASPipe5Itineraries : ProcessorItineraries<
+def T3RAS2TItineraries : ProcessorItineraries<
   [IF,ID,EX,MA,WB], [], [
 
   // ALU instruction with one destination register and either two register
@@ -37,9 +37,9 @@ def T3RASPipe5Itineraries : ProcessorItineraries<
                [ InstrStage<1,[IF]>   // one cycle in fetch stage
                , InstrStage<1,[ID]>   // one cycle in decode stage
                , InstrStage<1,[EX]>   // one cycle in execute stage
-               , InstrStage<1,[MA]>   // one cycle in memory access stage
+               , InstrStage<2,[MA]>   // one cycle in memory access stage
                , InstrStage<1,[WB]>], // one cycle in write back stage
-               [ 2                    // result ready after two cycles
+               [ 4                    // result ready after two cycles
                , 1                    // first operand read after one cycle
                , 1 ]>,                // second operand read after one cycle
 
@@ -48,7 +48,8 @@ def T3RASPipe5Itineraries : ProcessorItineraries<
   // stages except the memory access stage, which takes 31 cycles. The two
   // source operands are read during the decode stage and the result is ready
   // after the memory access stage.
-  InstrItinData< IIC_ALUd,
+  #ifdef ALUd
+		InstrItinData< IIC_ALUd,
                [ InstrStage<1,[IF]>   // one cycle in fetch stage
                , InstrStage<1,[ID]>   // one cycle in decode stage
                , InstrStage<1,[EX]>   // one cycle in execute stage
@@ -57,7 +58,7 @@ def T3RASPipe5Itineraries : ProcessorItineraries<
                [ 33                   // result ready after 33 cycles
                , 1                    // first operand read after one cycle
                , 1 ]>,                // second operand read after one cycle
-
+	#endif
   // Shift instruction with one destination register and either two register
   // source operands or one register source operand and one immediate operand.
   // The instruction takes one cycle to execute in each of the pipeline stages.
@@ -108,6 +109,24 @@ def T3RASPipe5Itineraries : ProcessorItineraries<
                , InstrStage<1,[WB]>], // one cycle in write back stage
                [ 4                    // result ready after four cycles
                , 1 ]>,                // first operand read after one cycle
+  InstrItinData< IIC_lw,
+               [ InstrStage<1,[IF]>   // one cycle in fetch stage
+               , InstrStage<1,[ID]>   // one cycle in decode stage
+               , InstrStage<1,[EX]>   // one cycle in execute stage
+               , InstrStage<1,[MA]>   // one cycle in memory access stage
+               , InstrStage<1,[WB]>], // one cycle in write back stage
+               [ 2                    // result ready after three cycles
+               , 1                    // first operand read after one cycle
+               , 1 ]>,                // second operand read after one cycle
+  InstrItinData< IIC_lwi,
+               [ InstrStage<1,[IF]>   // one cycle in fetch stage
+               , InstrStage<1,[ID]>   // one cycle in decode stage
+               , InstrStage<1,[EX]>   // one cycle in execute stage
+               , InstrStage<1,[MA]>   // one cycle in memory access stage
+               , InstrStage<1,[WB]>], // one cycle in write back stage
+               [ 2                    // result ready after three cycles
+               , 1                    // first operand read after one cycle
+               , 1 ]>,                // second operand read after one cycle
 
   // Cache control instruction with two source operand registers. The
   // instruction takes one cycle to execute in each of the pipeline stages

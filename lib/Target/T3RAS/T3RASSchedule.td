@@ -45,11 +45,16 @@ def IIC_Pseudo : InstrItinClass;
 def T3RASGenericItineraries : ProcessorItineraries<[], [], []>;
 
 //===----------------------------------------------------------------------===//
-// MBlaze instruction itineraries for three stage pipeline.
+// T3RAS instruction itineraries for 1 Threaded CPU.
 //===----------------------------------------------------------------------===//
-include "T3RASSchedule3.td"
+include "T3RASSchedule1T.td"
 
 //===----------------------------------------------------------------------===//
-// MBlaze instruction itineraries for five stage pipeline.
+// T3RAS instruction itineraries for 2 Threaded CPU.
 //===----------------------------------------------------------------------===//
-include "T3RASSchedule5.td"
+include "T3RASSchedule2T.td"
+
+//===----------------------------------------------------------------------===//
+// MBlaze instruction itineraries for 4 Threaded CPU.
+//===----------------------------------------------------------------------===//
+include "T3RASSchedule4T.td"
