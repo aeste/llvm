@@ -48,7 +48,7 @@ def T3RAS2TItineraries : ProcessorItineraries<
   // stages except the memory access stage, which takes 31 cycles. The two
   // source operands are read during the decode stage and the result is ready
   // after the memory access stage.
-  #ifdef ALUd
+  /*
 		InstrItinData< IIC_ALUd,
                [ InstrStage<1,[IF]>   // one cycle in fetch stage
                , InstrStage<1,[ID]>   // one cycle in decode stage
@@ -58,7 +58,7 @@ def T3RAS2TItineraries : ProcessorItineraries<
                [ 33                   // result ready after 33 cycles
                , 1                    // first operand read after one cycle
                , 1 ]>,                // second operand read after one cycle
-	#endif
+	*/
   // Shift instruction with one destination register and either two register
   // source operands or one register source operand and one immediate operand.
   // The instruction takes one cycle to execute in each of the pipeline stages.

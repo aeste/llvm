@@ -36,6 +36,8 @@ def IIC_FPUc   : InstrItinClass;*/
 def IIC_BR     : InstrItinClass;
 def IIC_BRc    : InstrItinClass;
 def IIC_BRl    : InstrItinClass;
+def IIC_lwi	:InstrItinClass;
+def IIC_lw	:InstrItinClass;
 //def IIC_WDC    : InstrItinClass;
 def IIC_Pseudo : InstrItinClass;
 

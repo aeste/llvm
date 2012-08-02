@@ -11,7 +11,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef T3RAS_TARGETMACHINE_H
+//#ifndef T3RAS_TARGETMACHINE_H
 #define T3RAS_TARGETMACHINE_H
 
 #include "T3RASSubtarget.h"
@@ -83,4 +83,4 @@ namespace llvm {
   };
 } // End llvm namespace
 
-#endif
+//#endif
