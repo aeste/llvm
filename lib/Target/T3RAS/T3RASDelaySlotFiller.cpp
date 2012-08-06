@@ -16,13 +16,9 @@
 
 #include "T3RAS.h"
 #include "T3RASTargetMachine.h"
-#include "T3RASVars.h"
 #include "llvm/CodeGen/MachineFunctionPass.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 #include "llvm/Target/TargetInstrInfo.h"
-#include "llvm/Target/TargetMachine.h"
-#include "llvm/Target/TargetRegisterInfo.h"
-#include "llvm/ADT/SmallSet.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Debug.h"
@@ -32,9 +28,7 @@
 using namespace llvm;
 
 STATISTIC(FilledSlots, "Number of delay slots filled");
-STATISTIC(UsefulSlots, "Number of delay slots filled with instructions that"
-                       " are not NOP.");
-static cl::opt<bool> MBDisableDelaySlotFiller(
+static cl::opt<bool> DisableDelaySlotFiller(
   "disable-T3RAS-delay-filler",
   cl::init(false),
   cl::desc("Disable the T3RAS delay slot filter."),
@@ -55,14 +49,14 @@ namespace {
       return "T3RAS Delay Slot Filler";
     }
 
-    bool runOnMachineBasicBlock(MachineBasicBlock &MBB);
-    bool runOnMachineFunction(MachineFunction &F) {
+   bool runOnMachineBasicBlock(MachineBasicBlock &MBB);
+     bool runOnMachineFunction(MachineFunction &F) {
       bool Changed = false;
       for (MachineFunction::iterator FI = F.begin(), FE = F.end();
            FI != FE; ++FI)
         Changed |= runOnMachineBasicBlock(*FI);
       return Changed;
-    }
+    }/*
     bool isDelayFiller(MachineBasicBlock &MBB,
                        MachineBasicBlock::iterator candidate);
 
@@ -85,7 +79,7 @@ namespace {
     bool
     findDelayInstr(MachineBasicBlock &MBB, MachineBasicBlock::iterator slot,
                    MachineBasicBlock::iterator &Filler);
-
+*/
 
   };
   char Filler::ID = 0;
@@ -254,49 +248,26 @@ findDelayInstr(MachineBasicBlock &MBB,MachineBasicBlock::iterator slot) {
 /// runOnMachineBasicBlock - Fill in delay slots for the given basic block.
 /// Currently, we fill delay slots with NOPs. We assume there is only one
 /// delay slot per delayed instruction.
-bool Filler::
-runOnMachineBasicBlock(MachineBasicBlock &MBB) {
-  bool Changed = false;
-  LastFiller = MBB.end();
 
-  for (MachineBasicBlock::iterator I = MBB.begin(); I != MBB.end(); ++I)
-    if (I->hasDelaySlot()) {
-      ++FilledSlots;
-      Changed = true;
-
-      MachineBasicBlock::iterator D;
-
-      if (!MBDisableDelaySlotFiller && findDelayInstr(MBB, I, D)) {
-        MBB.splice(llvm::next(I), &MBB, D);
-        ++UsefulSlots;
-      } else
-        BuildMI(MBB, llvm::next(I), I->getDebugLoc(), TII->get(T3RAS::NOP));
-
-      // Record the filler instruction that filled the delay slot.
-      // The instruction after it will be visited in the next iteration.
-      LastFiller = ++I;
-     }
-  return Changed;
-
-}
 bool Filler::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
   bool Changed = false;
   for (MachineBasicBlock::iterator I = MBB.begin(); I != MBB.end(); ++I)
     if (I->hasDelaySlot()) {
+	for(int i=0;i<3;i++){
       MachineBasicBlock::iterator D = MBB.end();
       MachineBasicBlock::iterator J = I;
 
-      if (!MBDisableDelaySlotFiller)
+      if (!DisableDelaySlotFiller)
         D = findDelayInstr(MBB,I);
-
+	
       ++FilledSlots;
       Changed = true;
 
-      if (D == MBB.end()) {
+      if (D == MBB.end()) 
         	BuildMI(MBB, ++J, I->getDebugLoc(), TII->get(T3RAS::NOP));
-	}
       else
         MBB.splice(++J, &MBB, D);
+	}
     }
   return Changed;
 }
