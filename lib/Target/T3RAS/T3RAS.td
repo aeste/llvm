@@ -50,9 +50,9 @@ def FeatureMul         : SubtargetFeature<"mul", "HasMul", "true",
 // MBlaze processors supported.
 //===----------------------------------------------------------------------===//
 
-def : Processor<"T3RAS",  T3RASGenericItineraries, []>;
-def : Processor<"T3RAS3", T3RASPipe3Itineraries, []>;
-def : Processor<"T3RAS5", T3RASPipe5Itineraries, []>;
+def : Processor<"T3RAS",  T3RAS1TItineraries, []>;
+def : Processor<"T3RAS2T", T3RAS2TItineraries, []>;
+def : Processor<"T3RAS4T", T3RAS4TItineraries, []>;
 
 //===----------------------------------------------------------------------===//
 // Instruction Descriptions

@@ -461,7 +461,6 @@ let canFoldAsLoad = 1, isReMaterializable = 1 in {
   def LHUI : LoadMI<0x39, "lhui   ", zextloadi16>;
   def LWI  : LoadMI<0x3A, "lwi    ", load>;
 }
-
 def SB  :  StoreM<0x34, 0x000, "sb     ">;
 def SBR :  StoreM<0x34, 0x200, "sbr    ">;
 
@@ -670,7 +669,7 @@ def MSRSET : MSR<0x25, 0x20, (outs GPR:$dst), (ins uimm15:$set),
 def MSRCLR : MSR<0x25, 0x22, (outs GPR:$dst), (ins uimm15:$clr),
                  "msrclr    $dst, $clr", [], IIC_ALU>;
 
-let rd=0x0, Form=FCRR in {
+/*let rd=0x0, Form=FCRR in {
   def WDC  : TA<0x24, 0x64, (outs), (ins GPR:$a, GPR:$b),
                 "wdc       $a, $b", [], IIC_WDC>;
   def WDCF : TA<0x24, 0x74, (outs), (ins GPR:$a, GPR:$b),
@@ -679,7 +678,7 @@ let rd=0x0, Form=FCRR in {
                 "wdc.clear $a, $b", [], IIC_WDC>;
   def WIC  : TA<0x24, 0x68, (outs), (ins GPR:$a, GPR:$b),
                 "wic       $a, $b", [], IIC_WDC>;
-}
+}*/
 
 def BRK  :  BranchL<0x26, 0x0C, 0x000, "brk    ">;
 def BRKI : BranchLI<0x2E, 0x0C, "brki   ">;
