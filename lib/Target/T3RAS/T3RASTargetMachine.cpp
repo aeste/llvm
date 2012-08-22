@@ -1,4 +1,4 @@
-//===-- MBlazeTargetMachine.cpp - Define TargetMachine for MBlaze ---------===//
+ //===-- MBlazeTargetMachine.cpp - Define TargetMachine for MBlaze ---------===//
 //
 //                     The LLVM Compiler Infrastructure
 //
@@ -79,3 +79,4 @@ bool T3RASPassConfig::addPreEmitPass() {
   PM->add(createT3RASDelaySlotFillerPass(getT3RASTargetMachine()));
   return true;
 }
+//TODO:add a pre emit pass here to solve data hazards

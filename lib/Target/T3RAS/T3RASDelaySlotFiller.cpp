@@ -26,7 +26,8 @@
 #include "llvm/Support/raw_ostream.h"
 
 using namespace llvm;
-
+//TODO:adapt delay filler to fill in a variable number of slots
+//TODO: add filler to replace branch instructions with their non delay versions since the microblaze backend doesnt by default if there is no delay
 STATISTIC(FilledSlots, "Number of delay slots filled");
 static cl::opt<bool> DisableDelaySlotFiller(
   "disable-T3RAS-delay-filler",
@@ -56,31 +57,7 @@ namespace {
            FI != FE; ++FI)
         Changed |= runOnMachineBasicBlock(*FI);
       return Changed;
-    }/*
-    bool isDelayFiller(MachineBasicBlock &MBB,
-                       MachineBasicBlock::iterator candidate);
-
-    void insertCallUses(MachineBasicBlock::iterator MI,
-                        SmallSet<unsigned, 32>& RegDefs,
-                        SmallSet<unsigned, 32>& RegUses);
-
-    void insertDefsUses(MachineBasicBlock::iterator MI,
-                        SmallSet<unsigned, 32>& RegDefs,
-                        SmallSet<unsigned, 32>& RegUses);
-
-    bool IsRegInSet(SmallSet<unsigned, 32>& RegSet,
-                    unsigned Reg);
-
-    bool delayHasHazard(MachineBasicBlock::iterator candidate,
-                        bool &sawLoad, bool &sawStore,
-                        SmallSet<unsigned, 32> &RegDefs,
-                        SmallSet<unsigned, 32> &RegUses);
-
-    bool
-    findDelayInstr(MachineBasicBlock &MBB, MachineBasicBlock::iterator slot,
-                   MachineBasicBlock::iterator &Filler);
-*/
-
+    }
   };
   char Filler::ID = 0;
 } // end of anonymous namespace
@@ -253,7 +230,11 @@ bool Filler::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
   bool Changed = false;
   for (MachineBasicBlock::iterator I = MBB.begin(); I != MBB.end(); ++I)
     if (I->hasDelaySlot()) {
-	for(int i=0;i<3;i++){
+
+	int i;
+	if (TM.getSubtarget<T3RASSubtarget>().hasNoDelay())i=0;
+	else i=TM.getSubtarget<T3RASSubtarget>().delays();
+	for(i=i;i>0;i--){
       MachineBasicBlock::iterator D = MBB.end();
       MachineBasicBlock::iterator J = I;
 
@@ -268,6 +249,7 @@ bool Filler::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       else
         MBB.splice(++J, &MBB, D);
 	}
+//TODO:insert nop sort here to move NOPs to the end
     }
   return Changed;
 }

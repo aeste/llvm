@@ -63,6 +63,7 @@ def HasMul       : Predicate<"Subtarget.hasMul()">;
 //def HasMul64     : Predicate<"Subtarget.hasMul64()">;
 //def HasSqrt      : Predicate<"Subtarget.hasSqrt()">;
 // def HasMMU       : Predicate<"Subtarget.hasMMU()">;
+def HasNoDelay       : Predicate<"Subtarget.hasNoDelay()">;
 
 //===----------------------------------------------------------------------===//
 // MBlaze Operand, Complex Patterns and Transformations Definitions.
