@@ -47,17 +47,17 @@ def FeatureMul         : SubtargetFeature<"mul", "HasMul", "true",
 //                                "Implements sqrt and floating point convert">;
 def FeatureNoDelay         : SubtargetFeature<"hasnodelay", "HasNoDelay", "true",
                                 "disables branching delay slots -default for T3RAS4T">;
-def Feature1Delays         : SubtargetFeature<"1delay", "DelaySlots", "1",
+def Feature1Delays         : SubtargetFeature<"1-delayslot", "DelaySlots", "1",
                                 "enables 1 delay slot per branch -default for T3RAS2T">;
-def Feature2Delays         : SubtargetFeature<"2delay", "DelaySlots", "2",
+def Feature2Delays         : SubtargetFeature<"2-delayslot", "DelaySlots", "2",
                                 "enables 2 delay slot per branch">;
-def Feature3Delays         : SubtargetFeature<"3delay", "DelaySlots", "3",
+def Feature3Delays         : SubtargetFeature<"3-delayslot", "DelaySlots", "3",
                                 "enables 3 delay slot per branch -default for T3RAS">;
 //===----------------------------------------------------------------------===//
 // MBlaze processors supported.
 //===----------------------------------------------------------------------===//
 
-def : Processor<"T3RAS",  T3RAS1TItineraries, [Feature3Delays]>;
+def : Processor<"T3RAS1T",  T3RAS1TItineraries, [Feature3Delays]>;
 def : Processor<"T3RAS2T", T3RAS2TItineraries, [Feature1Delays]>;
 def : Processor<"T3RAS4T", T3RAS4TItineraries, [FeatureNoDelay]>;
 
