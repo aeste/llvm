@@ -25,8 +25,8 @@ namespace llvm {
   class MachineCodeEmitter;
 
   FunctionPass *createT3RASISelDag(T3RASTargetMachine &TM);
+  FunctionPass *createT3RASHazardPass(T3RASTargetMachine &TM);
   FunctionPass *createT3RASDelaySlotFillerPass(T3RASTargetMachine &TM);
-
 } // end namespace llvm;
 
 #endif

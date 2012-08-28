@@ -76,7 +76,8 @@ bool T3RASPassConfig::addInstSelector() {
 // machine code is emitted. return true if -print-machineinstrs should
 // print out the code after the passes.
 bool T3RASPassConfig::addPreEmitPass() {
+  PM->add(createT3RASHazardPass(getT3RASTargetMachine()));
   PM->add(createT3RASDelaySlotFillerPass(getT3RASTargetMachine()));
   return true;
 }
-//TODO:add a pre emit pass here to solve data hazards
+

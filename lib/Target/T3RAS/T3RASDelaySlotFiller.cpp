@@ -171,7 +171,8 @@ static bool delayHasHazard(MachineBasicBlock::iterator &candidate,
       }
     }
   }
-
+  unsigned myop = candidate->getOpcode();
+	if(myop==T3RAS::NOP) return true;
   return false;
 }
 
@@ -234,12 +235,12 @@ bool Filler::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 	int i;
 	if (TM.getSubtarget<T3RASSubtarget>().hasNoDelay())i=0;
 	else i=TM.getSubtarget<T3RASSubtarget>().delays();
-	for(i=i;i>0;i--){
+	for(int j=i;j>0;j--){
       MachineBasicBlock::iterator D = MBB.end();
       MachineBasicBlock::iterator J = I;
 
-      if (!DisableDelaySlotFiller)
-        D = findDelayInstr(MBB,I);
+      if (!DisableDelaySlotFiller)//FIXME:to use once data hazard solver has been improved else delay filling will interfere
+        //D = findDelayInstr(MBB,I);
 	
       ++FilledSlots;
       Changed = true;
@@ -249,7 +250,6 @@ bool Filler::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       else
         MBB.splice(++J, &MBB, D);
 	}
-//TODO:insert nop sort here to move NOPs to the end
     }
   return Changed;
 }
