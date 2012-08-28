@@ -367,7 +367,7 @@ T3RASTargetLowering::EmitCustomSelect(MachineInstr *MI,
   MachineFunction *F = MBB->getParent();
   MachineBasicBlock *flsBB = F->CreateMachineBasicBlock(LLVM_BB);
   MachineBasicBlock *dneBB = F->CreateMachineBasicBlock(LLVM_BB);
-
+//TODO:include a version without delay slots here
   unsigned Opc;
   switch (MI->getOperand(4).getImm()) {
   default: llvm_unreachable("Unknown branch condition");

@@ -30,7 +30,7 @@ def T3RASInstrInfo : InstrInfo;
 //===----------------------------------------------------------------------===//
 // T3RAS Subtarget features                                              //
 //===----------------------------------------------------------------------===//
-//this section needs to be modified to be compatible with T3RAS
+
 def FeatureBarrel      : SubtargetFeature<"barrel", "HasBarrel", "true",
                                 "Implements barrel shifter">;
 //def FeatureDiv         : SubtargetFeature<"div", "HasDiv", "true",
@@ -45,14 +45,21 @@ def FeatureMul         : SubtargetFeature<"mul", "HasMul", "true",
 //                                "Implements multiplier with 64-bit result">;
 //def FeatureSqrt        : SubtargetFeature<"sqrt", "HasSqrt", "true",
 //                                "Implements sqrt and floating point convert">;
-
+def FeatureNoDelay         : SubtargetFeature<"hasnodelay", "HasNoDelay", "true",
+                                "disables branching delay slots -default for T3RAS4T">;
+def Feature1Delays         : SubtargetFeature<"1delay", "DelaySlots", "1",
+                                "enables 1 delay slot per branch -default for T3RAS2T">;
+def Feature2Delays         : SubtargetFeature<"2delay", "DelaySlots", "2",
+                                "enables 2 delay slot per branch">;
+def Feature3Delays         : SubtargetFeature<"3delay", "DelaySlots", "3",
+                                "enables 3 delay slot per branch -default for T3RAS">;
 //===----------------------------------------------------------------------===//
 // MBlaze processors supported.
 //===----------------------------------------------------------------------===//
 
-def : Processor<"T3RAS",  T3RAS1TItineraries, []>;
-def : Processor<"T3RAS2T", T3RAS2TItineraries, []>;
-def : Processor<"T3RAS4T", T3RAS4TItineraries, []>;
+def : Processor<"T3RAS",  T3RAS1TItineraries, [Feature3Delays]>;
+def : Processor<"T3RAS2T", T3RAS2TItineraries, [Feature1Delays]>;
+def : Processor<"T3RAS4T", T3RAS4TItineraries, [FeatureNoDelay]>;
 
 //===----------------------------------------------------------------------===//
 // Instruction Descriptions

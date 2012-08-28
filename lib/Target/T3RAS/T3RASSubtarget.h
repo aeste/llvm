@@ -23,7 +23,7 @@
 
 namespace llvm {
 class StringRef;
-
+class GlobalValue;
 class T3RASSubtarget : public T3RASGenSubtargetInfo {
 
 protected:
@@ -35,7 +35,8 @@ protected:
   bool HasMul64;
   bool HasSqrt;
   bool HasItin;
-
+  bool HasNoDelay;
+  int DelaySlots;
   InstrItineraryData InstrItins;
 
 public:
@@ -69,6 +70,8 @@ public:
   bool hasMul64()  const { return HasMul64; }
   bool hasDiv()    const { return HasDiv; }
   bool hasBarrel() const { return HasBarrel; }
+  bool hasNoDelay() const { return HasNoDelay; }
+  int delays() const { return DelaySlots; }
 };
 } // End llvm namespace
 
