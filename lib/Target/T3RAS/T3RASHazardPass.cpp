@@ -95,10 +95,10 @@ MachineBasicBlock::iterator i=candidate;
 
 //for(int k=forwardLength;k>0;k--)fL--;
 //for(int k=dependencyLength;k>0;k--)dL--;
-if(candidate!=MBB.begin()){
-for(int k=dependencyLength;k>0;k--){t++;i--;if(i==MBB.begin())break;}
-}
-i=candidate;
+//if(candidate!=MBB.begin()){
+//for(int k=dependencyLength;k>0;k--){t++;i--;if(i==MBB.begin())break;}
+//}
+//i=candidate;
 //TODO:improve this algorithm and allow instructions to be moved forwards
 bool hasHazard=false;
 bool op_is_def=false;
@@ -121,8 +121,8 @@ unsigned op;
 		}
 		
 	}*/
-	if(hasHazard==true)return hasHazard;
-	else if(i->getOpcode()==T3RAS::IMM)return false;
+	if(hasHazard)return hasHazard;
+	//else if(i->getOpcode()==T3RAS::IMM)return false;
 	else return false;
 }
 
@@ -291,11 +291,12 @@ bool Filler::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 		int i;
 		if (TM.getSubtarget<T3RASSubtarget>().hasNoDelay())i=0;
 		else i=TM.getSubtarget<T3RASSubtarget>().delays();
-
+		if(TM.getSubtarget<T3RASSubtarget>().disableHazardPass())i=0;
 		for(i=i;i>0;i--){
 		
 		bool D=false;
 		MachineBasicBlock::iterator J = I;
+		MachineBasicBlock::iterator JStart = MBB.begin();
 		//MachineBasicBlock::iterator delayDistance=MBB.end();
 
 		//for(int k=Delay;k>0;k--)delayDistance--;
@@ -311,9 +312,9 @@ bool Filler::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 	//	I=delayDistance;}
       //else	{
         //insert code to delete the NOP there after.
-			if(I!=MBB.begin()||I->isTerminator()){if(hasImmInstruction(I))--J;
-        		BuildMI(MBB, --J, I->getDebugLoc(), TII->get(T3RAS::NOP));
-
+		JStart++;
+			if(I!=MBB.begin()&&I!=JStart&&--J!=MBB.begin()){//if(hasImmInstruction(I))--J;
+        		BuildMI(MBB, J, I->getDebugLoc(), TII->get(T3RAS::NOP));
 			}//end of if based on beginning or not
 		}//end of for loop based on number of delays
    	}//end of MBB loop

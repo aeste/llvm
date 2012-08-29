@@ -240,7 +240,7 @@ bool Filler::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       MachineBasicBlock::iterator J = I;
 
       if (!DisableDelaySlotFiller)//FIXME:to use once data hazard solver has been improved else delay filling will interfere
-        //D = findDelayInstr(MBB,I);
+        D = findDelayInstr(MBB,I);
 	
       ++FilledSlots;
       Changed = true;

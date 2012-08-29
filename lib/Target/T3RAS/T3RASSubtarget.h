@@ -37,6 +37,7 @@ protected:
   bool HasItin;
   bool HasNoDelay;
   int DelaySlots;
+  bool DisableHazardSolver;
   InstrItineraryData InstrItins;
 
 public:
@@ -72,6 +73,7 @@ public:
   bool hasBarrel() const { return HasBarrel; }
   bool hasNoDelay() const { return HasNoDelay; }
   int delays() const { return DelaySlots; }
+  bool disableHazardPass() const{ return DisableHazardSolver;}
 };
 } // End llvm namespace
 

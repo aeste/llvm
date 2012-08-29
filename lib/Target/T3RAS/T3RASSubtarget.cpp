@@ -30,7 +30,7 @@ T3RASSubtarget::T3RASSubtarget(const std::string &TT,
   T3RASGenSubtargetInfo(TT, CPU, FS),
   HasBarrel(false), HasMul(false),//, HasDiv(false), HasPatCmp(false),
   //HasFPU(false), HasMul64(false), HasSqrt(false)
-	HasNoDelay(false), DelaySlots(1)
+	HasNoDelay(false), DelaySlots(1),DisableHazardSolver(false)
 {
 
   // Parse features string.
