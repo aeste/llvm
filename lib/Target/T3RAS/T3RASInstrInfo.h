@@ -87,6 +87,7 @@ namespace T3RAS {
 
   // Turn condition code into conditional branch opcode.
   inline static unsigned GetCondBranchFromCond(CondCode CC) {
+	//TODO:Insert condition to check if variant has delay and included a branch condition without delays
     switch (CC) {
     default: llvm_unreachable("Unknown condition code");
     case COND_EQ: return T3RAS::BEQID;

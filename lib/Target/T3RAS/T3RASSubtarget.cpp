@@ -13,6 +13,7 @@
 
 #include "T3RASSubtarget.h"
 #include "T3RAS.h"
+
 #include "T3RASRegisterInfo.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/TargetRegistry.h"
@@ -27,23 +28,24 @@ T3RASSubtarget::T3RASSubtarget(const std::string &TT,
                                  const std::string &CPU,
                                  const std::string &FS):
   T3RASGenSubtargetInfo(TT, CPU, FS),
-  HasBarrel(true), HasMul(true)//, HasDiv(false), HasPatCmp(false),
+  HasBarrel(false), HasMul(false),//, HasDiv(false), HasPatCmp(false),
   //HasFPU(false), HasMul64(false), HasSqrt(false)
+	HasNoDelay(false), DelaySlots(1),DisableHazardSolver(false)
 {
+
   // Parse features string.
   std::string CPUName = CPU;
   if (CPUName.empty())
-    CPUName = "T3RAS";
+    CPUName = "T3RAS1T";
   ParseSubtargetFeatures(CPUName, FS);
-
   // Only use instruction scheduling if the selected CPU has an instruction
   // itinerary (the default CPU is the only one that doesn't).
-  HasItin = CPUName != "T3RAS";
+  HasItin = CPUName != "MBlaze";
   DEBUG(dbgs() << "CPU " << CPUName << "(" << HasItin << ")\n");
 
   // Initialize scheduling itinerary for the specified CPU.
   InstrItins = getInstrItineraryForCPU(CPUName);
-
+	
   // Compute the issue width of the MBlaze itineraries
   computeIssueWidth();
 }

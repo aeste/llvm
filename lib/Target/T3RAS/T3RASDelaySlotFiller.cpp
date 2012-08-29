@@ -26,10 +26,10 @@
 #include "llvm/Support/raw_ostream.h"
 
 using namespace llvm;
-
+//TODO:adapt delay filler to fill in a variable number of slots
+//TODO: add filler to replace branch instructions with their non delay versions since the microblaze backend doesnt by default if there is no delay
 STATISTIC(FilledSlots, "Number of delay slots filled");
-
-static cl::opt<bool> MBDisableDelaySlotFiller(
+static cl::opt<bool> DisableDelaySlotFiller(
   "disable-T3RAS-delay-filler",
   cl::init(false),
   cl::desc("Disable the T3RAS delay slot filter."),
@@ -40,6 +40,7 @@ namespace {
 
     TargetMachine &TM;
     const TargetInstrInfo *TII;
+    MachineBasicBlock::iterator LastFiller;
 
     static char ID;
     Filler(TargetMachine &tm)
@@ -49,15 +50,14 @@ namespace {
       return "T3RAS Delay Slot Filler";
     }
 
-    bool runOnMachineBasicBlock(MachineBasicBlock &MBB);
-    bool runOnMachineFunction(MachineFunction &F) {
+   bool runOnMachineBasicBlock(MachineBasicBlock &MBB);
+     bool runOnMachineFunction(MachineFunction &F) {
       bool Changed = false;
       for (MachineFunction::iterator FI = F.begin(), FE = F.end();
            FI != FE; ++FI)
         Changed |= runOnMachineBasicBlock(*FI);
       return Changed;
     }
-
   };
   char Filler::ID = 0;
 } // end of anonymous namespace
@@ -171,7 +171,8 @@ static bool delayHasHazard(MachineBasicBlock::iterator &candidate,
       }
     }
   }
-
+  unsigned myop = candidate->getOpcode();
+	if(myop==T3RAS::NOP) return true;
   return false;
 }
 
@@ -225,23 +226,30 @@ findDelayInstr(MachineBasicBlock &MBB,MachineBasicBlock::iterator slot) {
 /// runOnMachineBasicBlock - Fill in delay slots for the given basic block.
 /// Currently, we fill delay slots with NOPs. We assume there is only one
 /// delay slot per delayed instruction.
+
 bool Filler::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
   bool Changed = false;
   for (MachineBasicBlock::iterator I = MBB.begin(); I != MBB.end(); ++I)
     if (I->hasDelaySlot()) {
+
+	int i;
+	if (TM.getSubtarget<T3RASSubtarget>().hasNoDelay())i=0;
+	else i=TM.getSubtarget<T3RASSubtarget>().delays();
+	for(int j=i;j>0;j--){
       MachineBasicBlock::iterator D = MBB.end();
       MachineBasicBlock::iterator J = I;
 
-      if (!MBDisableDelaySlotFiller)
+      if (!DisableDelaySlotFiller)//FIXME:to use once data hazard solver has been improved else delay filling will interfere
         D = findDelayInstr(MBB,I);
-
+	
       ++FilledSlots;
       Changed = true;
 
-      if (D == MBB.end())
-        BuildMI(MBB, ++J, I->getDebugLoc(), TII->get(T3RAS::NOP));
+      if (D == MBB.end()) 
+        	BuildMI(MBB, ++J, I->getDebugLoc(), TII->get(T3RAS::NOP));
       else
         MBB.splice(++J, &MBB, D);
+	}
     }
   return Changed;
 }
@@ -251,4 +259,3 @@ bool Filler::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 FunctionPass *llvm::createT3RASDelaySlotFillerPass(T3RASTargetMachine &tm) {
   return new Filler(tm);
 }
-
