@@ -53,6 +53,8 @@ def Feature2Delays         : SubtargetFeature<"2-delayslot", "DelaySlots", "2",
                                 "enables 2 delay slot per branch">;
 def Feature3Delays         : SubtargetFeature<"3-delayslot", "DelaySlots", "3",
                                 "enables 3 delay slot per branch -default for T3RAS">;
+def FeatureNoHazardSolver         : SubtargetFeature<"nohazardsolver", "DisableHazardSolver", "true",
+                                "disables hazard solver pass">;
 //===----------------------------------------------------------------------===//
 // MBlaze processors supported.
 //===----------------------------------------------------------------------===//
