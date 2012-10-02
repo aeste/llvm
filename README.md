@@ -10,6 +10,7 @@ customisations made to the upstream code.
 
 Historical Summary
 ------------------
+* 12.35: T3RAS alpha release.
 * 12.27: LLVM-3.1 release.
 
 Code Organisation
